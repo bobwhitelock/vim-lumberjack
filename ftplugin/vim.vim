@@ -1,2 +1,2 @@
 
-let b:print_string = "echomsg '%s:' %s"
+let b:print_string = "echomsg 'IDENTIFIER:' VALUE"

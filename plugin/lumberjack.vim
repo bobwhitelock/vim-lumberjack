@@ -20,7 +20,7 @@ function! s:handle_operator_print(motion_wise, enter_insert_char)
   normal! mz
 
   let motion_text = s:yank_last_motion(a:motion_wise)
-  let print_string = substitute(b:print_string, '%s', motion_text, 'g')
+  let print_string = s:template_print_string(b:print_string, motion_text)
   execute 'normal!' a:enter_insert_char . print_string
 
   normal! `z
@@ -35,4 +35,34 @@ function! s:yank_last_motion(motion_wise)
   let &g:selection = original_selection
 
   return @z
+endfunction
+
+function! s:template_print_string(print_string, value)
+  let identifier = a:value . ' [' . s:random_string(8) . ']'
+  let identifier_replaced = substitute(a:print_string, 'IDENTIFIER', identifier, 'g')
+  let value_replaced = substitute(identifier_replaced, 'VALUE', a:value, 'g')
+  return value_replaced
+endfunction
+
+" Generate random string of lowercase ASCII chars of given length.
+function! s:random_string(length)
+  let a_code = char2nr('a')
+  let z_code = char2nr('z')
+
+  let chars = []
+  while len(chars) < a:length
+    let code = s:pseudo_random_integer_between(a_code, z_code)
+    call add(chars, nr2char(code))
+  endwhile
+
+  return join(chars, '')
+endfunction
+
+" Generate pseudo-random integer between given values (inclusive).
+" Adapted from https://vi.stackexchange.com/a/3840.
+function! s:pseudo_random_integer_between(min, max)
+  let range = a:max - a:min + 1
+  let random_int = str2nr(matchstr(reltimestr(reltime()), '\v\.@<=\d+')[1:])
+  let int_in_range = random_int % range
+  return int_in_range + a:min
 endfunction

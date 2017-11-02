@@ -1,2 +1,2 @@
 
-let b:print_string = "p '%s:', %s"
+let b:print_string = "p 'IDENTIFIER:', VALUE"

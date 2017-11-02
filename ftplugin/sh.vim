@@ -1,2 +1,2 @@
 
-let b:print_string = 'echo "%s: ${%s}"'
+let b:print_string = 'echo "IDENTIFIER: ${VALUE}"'
