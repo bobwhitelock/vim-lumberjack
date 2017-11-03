@@ -39,9 +39,20 @@ endfunction
 
 function! s:template_print_string(print_string, value)
   let identifier = a:value . ' [' . s:random_string(8) . ']'
-  let identifier_replaced = substitute(a:print_string, 'IDENTIFIER', identifier, 'g')
-  let value_replaced = substitute(identifier_replaced, 'VALUE', a:value, 'g')
-  return value_replaced
+  let values_map = {
+        \ 'VALUE': a:value,
+        \ 'IDENTIFIER': identifier
+        \}
+  return s:template_string(a:print_string, values_map)
+endfunction
+
+" Replace keys in string using values in values_map; see
+" https://stackoverflow.com/a/766093/2620402 for explanation of this
+" technique.
+function! s:template_string(string, values_map)
+  let regex = join(keys(a:values_map), '\|')
+  let substitution =  '\=' . string(a:values_map) . '[submatch(0)]'
+  return substitute(a:string, regex, substitution, 'g')
 endfunction
 
 " Generate random string of lowercase ASCII chars of given length.
