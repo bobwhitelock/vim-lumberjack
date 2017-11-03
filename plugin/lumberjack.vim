@@ -38,11 +38,15 @@ function! s:yank_last_motion(motion_wise)
 endfunction
 
 function! s:template_print_string(print_string, value)
-  let identifier = a:value . ' [' . s:random_string(8) . ']'
+  let token = s:random_string(8)
+  let identifier = a:value . ' [' . token . ']'
+
   let values_map = {
         \ 'VALUE': a:value,
+        \ 'TOKEN': token,
         \ 'IDENTIFIER': identifier
         \}
+
   return s:template_string(a:print_string, values_map)
 endfunction
 
