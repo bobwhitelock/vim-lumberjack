@@ -12,18 +12,28 @@ function! OperatorPrintAbove(motion_wise)
 endfunction
 
 function! s:handle_operator_print(motion_wise, enter_insert_char)
-  if !exists('b:lumberjack_default_print_string')
-    echoerr "'b:lumberjack_default_print_string' not defined for current buffer"
+  let print_string = s:print_string()
+  if empty(print_string)
     return
   endif
 
   normal! mz
 
   let motion_text = s:yank_last_motion(a:motion_wise)
-  let print_string = s:template_print_string(b:lumberjack_default_print_string, motion_text)
-  execute 'normal!' a:enter_insert_char . print_string
+  let rendered_print_string = s:template_print_string(print_string, motion_text)
+  execute 'normal!' a:enter_insert_char . rendered_print_string
 
   normal! `z
+endfunction
+
+function! s:print_string()
+  if exists('b:lumberjack_print_string')
+    return b:lumberjack_print_string
+  elseif exists('b:lumberjack_default_print_string')
+    return b:lumberjack_default_print_string
+  else
+    echoerr "No 'b:lumberjack_print_string' or 'b:lumberjack_default_print_string' defined for current buffer."
+  endif
 endfunction
 
 function! s:yank_last_motion(motion_wise)
