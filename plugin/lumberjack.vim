@@ -1,11 +1,9 @@
 
-map gl <Plug>(operator-print-below)
 call operator#user#define('print-below', 'OperatorPrintBelow')
 function! OperatorPrintBelow(motion_wise)
   call s:handle_operator_print(a:motion_wise, 'o')
 endfunction
 
-map gL <Plug>(operator-print-above)
 call operator#user#define('print-above', 'OperatorPrintAbove')
 function! OperatorPrintAbove(motion_wise)
   call s:handle_operator_print(a:motion_wise, 'O')
