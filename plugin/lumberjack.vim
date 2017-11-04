@@ -50,7 +50,9 @@ endfunction
 function! s:template_print_string(print_string, value)
   let token = s:random_string(8)
 
-  let identifier = a:value
+  " Currently assume identifier will always be inserted within double quotes
+  " and only escape these; also assume '\' is always escape character.
+  let identifier = escape(a:value, '"')
   if s:include_random_token()
     let identifier .= ' [' . token . ']'
   endif
