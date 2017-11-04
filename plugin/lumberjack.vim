@@ -39,7 +39,11 @@ endfunction
 
 function! s:template_print_string(print_string, value)
   let token = s:random_string(8)
-  let identifier = a:value . ' [' . token . ']'
+
+  let identifier = a:value
+  if s:include_random_token()
+    let identifier .= ' [' . token . ']'
+  endif
 
   let values_map = {
         \ 'VALUE': a:value,
@@ -48,6 +52,14 @@ function! s:template_print_string(print_string, value)
         \}
 
   return s:template_string(a:print_string, values_map)
+endfunction
+
+function! s:include_random_token()
+  if exists('g:lumberjack_include_random_token')
+    return g:lumberjack_include_random_token
+  else
+    return v:true
+  endif
 endfunction
 
 " Replace keys in string using values in values_map; see
